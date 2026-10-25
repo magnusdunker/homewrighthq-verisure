@@ -1,0 +1,15 @@
+[
+  {
+    "data": {
+      "account": {
+        "installations": [
+          { "giid": "123456789000", "alias": "Hjemme", "customerType": "PRIVATE", "dealerId": "1", "subsidiary": 7, "pinCodeLength": 6, "locale": "da_DK",
+            "address": { "street": "Vestergade 1", "city": "Aarhus", "postalNumber": "8000", "__typename": "Address" }, "__typename": "Installation" },
+          { "giid": "123456789111", "alias": "", "customerType": "PRIVATE", "dealerId": "1", "subsidiary": 7, "pinCodeLength": 6, "locale": "da_DK",
+            "address": { "street": "Sommerhusvej 4", "city": "Blokhus", "postalNumber": "9492", "__typename": "Address" }, "__typename": "Installation" }
+        ],
+        "__typename": "Account"
+      }
+    }
+  }
+]

@@ -1,0 +1,20 @@
+[
+  { "data": { "installation": { "armState": { "type": null, "statusType": "ARMED_HOME", "date": "2026-10-24T21:14:03.000Z", "name": "Mette", "changedVia": "APP", "allowedForFirstLine": true, "allowed": true, "errorCodes": [], "__typename": "ArmState" }, "__typename": "Installation" } } },
+  { "data": { "installation": { "climates": [
+    { "device": { "deviceLabel": "2BA4 XYZ1", "area": "Stue", "gui": { "label": "SMOKE", "__typename": "GUI" }, "__typename": "Device" },
+      "humidityEnabled": true, "humidityTimestamp": "2026-10-25T09:40:00.000Z", "humidityValue": 48.0, "temperatureTimestamp": "2026-10-25T09:40:00.000Z", "temperatureValue": 21.4, "__typename": "Climate" },
+    { "device": { "deviceLabel": "3C11 ABC2", "area": "Entré", "gui": { "label": "SHOCK", "__typename": "GUI" }, "__typename": "Device" },
+      "humidityEnabled": false, "humidityTimestamp": null, "humidityValue": null, "temperatureTimestamp": "2026-10-25T09:41:00.000Z", "temperatureValue": 19.0, "__typename": "Climate" }
+  ], "__typename": "Installation" } } },
+  { "data": { "installation": { "doorWindows": [
+    { "device": { "deviceLabel": "3C11 ABC2", "area": "Entré", "__typename": "Device" }, "type": null, "state": "CLOSE", "wired": false, "reportTime": "2026-10-25T07:12:00.000Z", "__typename": "DoorWindow" },
+    { "device": { "deviceLabel": "4D22 DEF3", "area": "Terrassedør", "__typename": "Device" }, "type": null, "state": "OPEN", "wired": false, "reportTime": "2026-10-25T09:30:00.000Z", "__typename": "DoorWindow" }
+  ], "__typename": "Installation" } } },
+  { "data": { "installation": { "smartLocks": [
+    { "lockStatus": "LOCKED", "doorState": "CLOSE", "lockMethod": "AUTO", "eventTime": "2026-10-25T08:00:00.000Z", "doorLockType": "DOOR_LOCK", "secureMode": null,
+      "device": { "deviceLabel": "5E33 GHI4", "area": "Hoveddør", "__typename": "Device" }, "user": { "name": "Mette", "__typename": "User" }, "__typename": "SmartLock" }
+  ], "__typename": "Installation" } } },
+  { "data": { "installation": { "smartplugs": [
+    { "device": { "deviceLabel": "6F44 JKL5", "area": "Kaffemaskine", "gui": { "label": "SMARTPLUG", "__typename": "GUI" }, "__typename": "Device" }, "currentState": "OFF", "icon": "LIGHT", "isHazardous": false, "__typename": "SmartPlug" }
+  ], "__typename": "Installation" } } }
+]
