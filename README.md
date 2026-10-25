@@ -1,70 +1,70 @@
-# Verisure til HomewrightHQ
+# Verisure for HomewrightHQ
 
-En ekstern integration til [HomewrightHQ](https://github.com/magnusdunker/homewrighthq) for Verisure-alarmer: alarmpanel, Yale Doorman-låse på installationen, klimasensorer, dør- og vinduessensorer og smarte stik.
+An external integration for [HomewrightHQ](https://github.com/magnusdunker/homewrighthq) for Verisure alarms: alarm panel, Yale Doorman locks on the installation, climate sensors, door and window sensors and smart plugs.
 
-Verisure har intet officielt API til tredjeparter. Integrationen bruger det API, My Verisure-appen bruger, på samme måde som biblioteket python-verisure, som Home Assistants Verisure-integration bygger på. Verisure kan ændre det uden varsel.
+Verisure has no official API for third parties. The integration uses the API the My Verisure app uses, in the same way as the python-verisure library, which Home Assistant's Verisure integration is built on. Verisure can change it without notice.
 
 ## Installation
 
-I HomewrightHQ: **Indstillinger → Integrationer → Fra GitHub**. Indsæt
+In HomewrightHQ: **Settings → Integrations → From GitHub**. Paste
 
 ```
 https://github.com/magnusdunker/homewrighthq-verisure
 ```
 
-og tryk **Installér**. Tilføj derefter **Verisure** under **Tilføj integration**, og log ind med den e-mail og adgangskode, du bruger i My Verisure-appen.
+and press **Install**. Then add **Verisure** under **Add integration**, and log in with the email and password you use in the My Verisure app.
 
-Har kontoen totrinslogin, sender Verisure en kode med SMS eller e-mail (vælg hvilken i formularen). Skriv koden i næste trin. Derefter beder integrationen Verisure om at huske den, så en genstart ikke kræver en ny kode. Har kontoen flere installationer, vælger du en; tilføj integrationen igen for de andre.
+If the account has two-step login, Verisure sends a code by SMS or email (choose which in the form). Enter the code in the next step. The integration then asks Verisure to remember it, so a restart does not require a new code. If the account has several installations, you choose one; add the integration again for the others.
 
-Under **Indstillinger** på integrationen kan alarmkoden gemmes. Så kan alarm og låse styres fra automationer og kort uden at skrive koden. Uden gemt kode skal koden skrives ved hver kommando.
+Under **Options** on the integration the alarm code can be saved. Then the alarm and locks can be controlled from automations and cards without entering the code. Without a saved code, the code must be entered with each command.
 
-## Hvad du får
+## What you get
 
-- et alarmpanel med `disarmed`, `armed_home` og `armed_away`, og tilkobl hjemme, tilkobl ude og frakobl. `changed_by` er den, der sidst ændrede alarmen.
-- en lås for hver Yale Doorman (eller anden smart lås) på installationen, med lås og lås op, og en dørsensor, hvor låsen oplyser døren
-- temperatur og luftfugtighed fra røgdetektorer og andre sensorer, der måler dem
-- en binær sensor for hver dør- og vinduessensor (åben/lukket)
-- en kontakt for hvert smart stik
+- an alarm panel with `disarmed`, `armed_home` and `armed_away`, and arm home, arm away and disarm. `changed_by` is whoever last changed the alarm.
+- a lock for each Yale Doorman (or other smart lock) on the installation, with lock and unlock, and a door sensor where the lock reports the door
+- temperature and humidity from smoke detectors and other sensors that measure them
+- a binary sensor for each door and window sensor (open/closed)
+- a switch for each smart plug
 
-Hver sensor bliver sin egen enhed med navnet fra appen (f.eks. "Stue"), forbundet gennem installationen.
+Each sensor becomes its own device with the name from the app (e.g. "Stue"), connected through the installation.
 
-## Opdatering
+## Updates
 
-Integrationen læser alt med én forespørgsel hvert minut. Under **Indstillinger** kan tiden sættes fra 30 til 600 sekunder. Efter en kommando viser alarmen `arming` eller `disarming` og låsen `locking` eller `unlocking`, til den læses igen efter 15 sekunder.
+The integration reads everything with one request every minute. Under **Options** the interval can be set from 30 to 600 seconds. After a command the alarm shows `arming` or `disarming` and the lock `locking` or `unlocking`, until it is read again after 15 seconds.
 
-Sessionen gemmes på opsætningen og fornyes af sig selv. Kan den ikke fornyes, logger integrationen ind igen med adgangskoden. Kræver Verisure så en ny kode, viser HomewrightHQ det under problemer, og integrationen skal godkendes igen.
+The session is saved on the entry and renewed automatically. If it cannot be renewed, the integration logs in again with the password. If Verisure then requires a new code, HomewrightHQ shows it under issues, and the integration must be authorized again.
 
-## Ikke afprøvet mod den rigtige Verisure
+## Not tested against the real Verisure
 
-Integrationen er skrevet ud fra python-verisure og afprøvet mod en falsk Verisure med svar formet som de rigtige. Disse ting er ikke kontrolleret:
+The integration is written from python-verisure and tested against a fake Verisure with responses shaped like the real ones. These things are not checked:
 
-- Adresserne `automation01/02.verisure.com` til login og `m-api01/02.verisure.com/graphql`, og headeren `APPLICATION_ID: PS_PYTHON`.
-- Totrinsloginet: at `/auth/login` svarer med `stepUpToken`, at `/auth/mfa?type=phone` eller `type=email` sender koden, at `/auth/mfa/validate` tager `{"token": kode}`, og at `/auth/trust` giver en cookie, så senere login ikke kræver kode.
-- At `GET /auth/token` fornyer sessionen, og navnene på cookies. Integrationen gemmer alle cookies, Verisure sætter, uanset navn.
-- Hvilke fejl der betyder udløbet session: HTTP 401 eller GraphQL-fejlkoderne `SYS_00001` og `SYS_00004`.
-- GraphQL-forespørgslerne `fetchAllInstallations`, `ArmState`, `Climate`, `DoorWindow`, `SmartLock` og `SmartPlug`, og mutationerne `armStateArmAway`, `armStateArmHome`, `armStateDisarm`, `DoorLock`, `DoorUnlock` (med `LockDoorInput`) og `SmartPlugSetState`.
-- At flere forespørgsler kan sendes i én anmodning, og at svarene kommer i samme rækkefølge.
-- Værdierne `ARMED_HOME`, `ARMED_AWAY` og `DISARMED`, `LOCKED` og `UNLOCKED`, `OPEN` og `CLOSE`, og `ON` og `OFF`.
-- Hvordan en forkert alarmkode ser ud i svaret. Enhver GraphQL-fejl på en kommando vises som afvist kommando.
+- The addresses `automation01/02.verisure.com` for login and `m-api01/02.verisure.com/graphql`, and the header `APPLICATION_ID: PS_PYTHON`.
+- The two-step login: that `/auth/login` answers with `stepUpToken`, that `/auth/mfa?type=phone` or `type=email` sends the code, that `/auth/mfa/validate` takes `{"token": kode}`, and that `/auth/trust` gives a cookie so later logins do not require a code.
+- That `GET /auth/token` renews the session, and the names of the cookies. The integration saves every cookie Verisure sets, whatever its name.
+- Which errors mean an expired session: HTTP 401 or the GraphQL error codes `SYS_00001` and `SYS_00004`.
+- The GraphQL queries `fetchAllInstallations`, `ArmState`, `Climate`, `DoorWindow`, `SmartLock` and `SmartPlug`, and the mutations `armStateArmAway`, `armStateArmHome`, `armStateDisarm`, `DoorLock`, `DoorUnlock` (with `LockDoorInput`) and `SmartPlugSetState`.
+- That several queries can be sent in one request, and that the responses come back in the same order.
+- The values `ARMED_HOME`, `ARMED_AWAY` and `DISARMED`, `LOCKED` and `UNLOCKED`, `OPEN` and `CLOSE`, and `ON` and `OFF`.
+- What a wrong alarm code looks like in the response. Any GraphQL error on a command is shown as a rejected command.
 
-Kameraer, fotos fra bevægelsessensorer, låsenes indstillinger (auto-lås, lyd), hændelseslog og flere installationer i én opsætning er ikke med.
+Cameras, photos from motion sensors, the locks' settings (auto-lock, sound), the event log and several installations in one entry are not included.
 
-## Udvikling
+## Development
 
-Bygget i Rust på SDK'en `thehome-plugin` fra [homewright-example-integration-rust](https://github.com/magnusdunker/homewrighthq-example-integration-rust).
+Built in Rust on the `thehome-plugin` SDK from [homewright-example-integration-rust](https://github.com/magnusdunker/homewrighthq-example-integration-rust).
 
-- `src/api.rs`: login, totrinslogin, cookies og Verisures GraphQL-forespørgsler
-- `src/model.rs`: Verisures data og hvordan de bliver til tilstande
-- `src/lib.rs`: forbindelsen til HomewrightHQ
-- `tests/verisure.rs`: tests mod en falsk Verisure med svarene i `tests/fixtures`, og en falsk HomewrightHQ i `tests/host`
+- `src/api.rs`: login, two-step login, cookies and Verisure's GraphQL queries
+- `src/model.rs`: Verisure's data and how it becomes states
+- `src/lib.rs`: the connection to HomewrightHQ
+- `tests/verisure.rs`: tests against a fake Verisure with the responses in `tests/fixtures`, and a fake HomewrightHQ in `tests/host`
 
 ```
 cargo test
 cargo build --release
 ```
 
-En ny version udgives med et tag, f.eks. `git tag v0.1.0 && git push origin v0.1.0`. Workflowet bygger til Windows, Linux (x86_64 og arm64, statisk musl) og macOS og lægger binærerne og `homewright.json` på releasen.
+A new version is released with a tag, e.g. `git tag v0.1.0 && git push origin v0.1.0`. The workflow builds for Windows, Linux (x86_64 and arm64, static musl) and macOS and puts the binaries and `homewright.json` on the release.
 
-## Licens
+## License
 
 MIT
